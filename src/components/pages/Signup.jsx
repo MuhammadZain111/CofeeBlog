@@ -1,9 +1,6 @@
 import React from 'react'
 
-
-
-
-function Container() {
+function Signup() {
   return (
     <div>
       
@@ -11,4 +8,4 @@ function Container() {
   )
 }
 
-export default Container
+export default Signup

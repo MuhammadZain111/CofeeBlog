@@ -1,47 +1,43 @@
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
-import  authService from './appwrite/auth'
-import {login,logout} from './store/authSlice'
-import {Footer, Header} from './components'
+import authService from './appwrite/auth'
+import { login, logout } from './store/authSlice'
+import { Header } from './components'
 import { useDispatch } from 'react-redux'
-
-
+import { Outlet } from 'react-router-dom'  
 
 function App() {
-  
-const [loading, setLoading] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch();
 
-
- const dispatch  = useDispatch();
-
-   useEffect(() => {
-      authService.getCurrentUser()
+  useEffect(() => {
+    authService.getCurrentUser()
       .then((userData) => {
-       if (userData) {
-         dispatch(login(userData));
-      } else {
+        if (userData) {
+          dispatch(login({ userData: userData }))
+        } else {
+          dispatch(logout());
+        }
+      })
+      .catch((error) => {
+        console.log("Error fetching user:", error);
         dispatch(logout());
-      }
-    })
-    .catch((error) => {
-      console.log("Error fetching user:", error);
-      dispatch(logout());
-    })
-    .finally(() => {
-      setLoading(false);
-    });
-     }, []);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
-
+  if (loading) return <div>Loading...</div>
 
   return (
     <>
-    <div className="" >
-    <Header />
-    <Footer />
-    </div>
-
-      <h1>Vite + React</h1>
+      <div>
+        <Header />
+        <main>
+          <Outlet />   {/* ✅ renders child routes like Home, Login etc */}
+        </main>
+      </div>
     </>
   )
 }

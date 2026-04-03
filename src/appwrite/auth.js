@@ -1,16 +1,16 @@
-import conf from "../conf";
-import { Client, Account, ID } from "appwrite";
-
-
+import { Account, Client, ID } from "appwrite";
+import conf from '../../conf/conf.js';
 
 export class AuthService {
   client = new Client();
   account;
 
   constructor() {
+     console.log("URL:", conf.appWriteUrl)        // what does this print?
+     console.log("PROJECT:", conf.appWriteProjectId)
     this.client
       .setEndpoint(conf.appWriteUrl)
-      .setProject(conf.appwriteProjectId);
+      .setProject(conf.appWriteProjectId);
 
     this.account = new Account(this.client);
   }
@@ -23,7 +23,6 @@ export class AuthService {
         password,
         name
       );
-
       if (userAccount) {
         return this.login({ email, password });
       } else {
@@ -36,32 +35,28 @@ export class AuthService {
 
   async login({ email, password }) {
     try {
-      return await this.account.createEmailSession(email, password);
+      // ✅ Fixed method name
+      return await this.account.createEmailPasswordSession(email, password);
     } catch (error) {
       throw error;
     }
   }
 
-  async getcurrentUser() {
+  async getCurrentUser() {
     try {
       return await this.account.get();
     } catch (error) {
-      console.log(
-        "AppWrite Service :: getcurrentuser :: user error",
-        error
-      );
+      console.log("AppWrite Service :: getcurrentuser :: error", error);
     }
     return null;
   }
 
   async logout() {
     try {
-      await this.account.deleteSessions();
+      // ✅ Fixed - only deletes current session
+      await this.account.deleteSession('current');
     } catch (error) {
-      console.log(
-        "AppWrite Service :: logout :: user error",
-        error
-      );
+      console.log("AppWrite Service :: logout :: error", error);
     }
   }
 }

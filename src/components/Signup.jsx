@@ -2,7 +2,7 @@ import React from 'react'
 import {Link,useNavigate} from 'react-router-dom'
 import {login as authLogin} from '../store/authSlice'
 import {Button,Input,Logo} from './index/'
-import { useDispatch } from 'react-redux'
+import {useDispatch } from 'react-redux'
 import {AuthService} from '../appwrite/auth' 
 import {useForm} from 'react-hook-form'
 
@@ -66,7 +66,7 @@ function Signup()
           <div className=" space-y-5 "  >
        
 
-       
+
          <Input
            label="Email"
            placeholder="Enter your email"

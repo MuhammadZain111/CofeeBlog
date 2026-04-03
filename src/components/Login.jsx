@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link,useNavigate} from 'react-router-dom'
 import {login as authLogin} from '../store/authSlice'
-import {Button,Input,Logo} from './index/'
+import {Button,Input} from './'
 import { useDispatch } from 'react-redux'
 import {AuthService} from '../appwrite/auth' 
 import {useForm} from 'react-hook-form'
@@ -25,7 +25,7 @@ function Login() {
         {
             const  userData =await authService.getCurrentUser();
             if (userData) dispatch (authLogin(userData))
-            navigate("/")
+            Navigate("/")
         }
       }
       catch(error)
@@ -42,7 +42,7 @@ function Login() {
       <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black   `} >
         <div className='mb-2 flex justify-center      ' >
             <span className='inline-block w-full max-w-[100px]       ' >
-              <Logo />  
+           
             </span>
 
         </div>
@@ -89,13 +89,11 @@ function Login() {
   })}
 />
 
-        <Button type="sumit"  className="w-full" />Sign In<Button/>
+        <Button type="submit"  className="w-full" />Sign In<Button/>
  
 
         </div>
         </form>
-
-
 
 
       </div>
