@@ -3,21 +3,28 @@ import {Link,useNavigate} from 'react-router-dom'
 import {login as authLogin} from '../store/authSlice'
 import {Button,Input} from './'
 import { useDispatch } from 'react-redux'
-import {AuthService} from '../appwrite/auth' 
+import authService from '../appwrite/auth'
 import {useForm} from 'react-hook-form'
-
+import { useState } from 'react'
 
 
 
 function Login() {
 
-     const Navigate = useNavigate();
-     const dispatch = useNavigate();
-      const {register, handleSubmit}=useForm();
+      const [error, setError] = useState("")
+
+      const Navigate = useNavigate();
+    
+      const dispatch = useDispatch();
+     
+     const {register, handleSubmit}=useForm();
+
+
+    
 
      const  login= async(data)=>
     { 
-      serError("");
+      setError("");
       try
       {
         const session= await authService.login(data);
@@ -38,8 +45,8 @@ function Login() {
 
   return (
 
-    <div clasName={`mx-auto w-full max-w-lg bg-gray-100  rounded-xl p-10 border border/10 `} >
-      <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black   `} >
+    <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`} >
+      <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black`} >
         <div className='mb-2 flex justify-center      ' >
             <span className='inline-block w-full max-w-[100px]       ' >
            
@@ -48,17 +55,17 @@ function Login() {
         </div>
 
 
-      <h2 className="text-center text-xl font-bold leading-tight " >
-    </h2>
+      <h2 className="text-center text-xl font-bold leading-tight">Sign in to your account</h2>
 
-    <p className="mt-2 text-center text-base  text-black/60     " >
-        Don&apos;t have any account?nbsp; 
+    <p className="mt-2 text-center text-base text-black/60">
+        Don't have any account?&nbsp;
       <Link
         to="/signup"
-        className="font-medium text-primary transition-all duration-200 hover:underline   "
+        className="font-medium text-primary transition-all duration-200 hover:underline"
       >
+        Sign up
       </Link>
-      </p>
+    </p>
 
      {error && <p className="text-red-500 text-center">{error}</p>}
 
@@ -89,12 +96,10 @@ function Login() {
   })}
 />
 
-        <Button type="submit"  className="w-full" />Sign In<Button/>
- 
+        <Button type="submit" className="w-full">Sign In</Button>
 
         </div>
         </form>
-
 
       </div>
     </div>

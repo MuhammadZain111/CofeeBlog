@@ -1,11 +1,12 @@
 import React from 'react'
+import { Signup } from '../index'
 
-function Signup() {
+function SignupPage() {
   return (
     <div>
-      
+      <Signup />
     </div>
   )
 }
 
-export default Signup
+export default SignupPage

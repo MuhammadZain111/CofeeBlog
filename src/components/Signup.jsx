@@ -1,10 +1,10 @@
-import React from 'react'
-import {Link,useNavigate} from 'react-router-dom'
-import {login as authLogin} from '../store/authSlice'
-import {Button,Input,Logo} from './index/'
-import {useDispatch } from 'react-redux'
-import {AuthService} from '../appwrite/auth' 
-import {useForm} from 'react-hook-form'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import authService from '../appwrite/auth'
+import { login as authLogin } from '../store/authSlice'
+import { Button, Input, Logo } from './index/'
 
 
 
@@ -14,32 +14,24 @@ function Signup()
 {
    
      const Navigate = useNavigate();
-     const dispatch = useNavigate();
-     const {register, handleSubmit}=useForm();
+     const dispatch = useDispatch();
+     const { register, handleSubmit } = useForm();
+     const [error, setError] = useState("");
 
-
-    const create = async (data)=>{
+    const create = async (data) => {
+      setError("");
       try {
-         const userData = await authService.createAccount(data);
-        if(userData)
-        {
-            await authService.getCurrentUser();
-         if (userData)
-         dispatch(login(userData))
-         Navigate("/")
-        }
-
-      }
-      catch(error )
-      {
+         await authService.createAccount(data);
+         Navigate("/login");
+      } catch (error) {
         setError(error.message);
       }
     }
 
     return (
  
-     <div clasName={`mx-auto w-full max-w-lg bg-gray-100  rounded-xl p-10 border border/10 `} >
-         <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black   `} >
+     <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`} >
+         <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black`} >
            <div className='mb-2 flex justify-center      ' >
                <span className='inline-block w-full max-w-[100px]       ' >
                  <Logo />  
@@ -48,15 +40,15 @@ function Signup()
            </div>
    
    
-         <h2 className="text-center text-xl font-bold leading-tight " >
-       </h2>
+         <h2 className="text-center text-xl font-bold leading-tight">Sign up to create account</h2>
    
-       <p className="mt-2 text-center text-base  text-black/60     " >
-           Don&apos;t have any account?nbsp; 
+<p className="mt-2 text-center text-base text-black/60">
+           Already have an account?&nbsp;
          <Link
-           to="/signup"
-           className="font-medium text-primary transition-all duration-200 hover:underline   "
+           to="/login"
+           className="font-medium text-primary transition-all duration-200 hover:underline"
          >
+           Login
          </Link>
          </p>
    
@@ -67,6 +59,14 @@ function Signup()
        
 
 
+         <Input
+           label="Name"
+           placeholder="Enter your name"
+           type="text"
+           {...register("name", {
+             required: "Name is required",
+           })}
+         />
          <Input
            label="Email"
            placeholder="Enter your email"
@@ -79,18 +79,18 @@ function Signup()
            })}
            />
          <Input
-        label="Password"
-        placeholder="Enter your Password"
-        type="password"
-        {...register("password", {
-        required: "Password is required",
-        validate: (value) =>
-         /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(value) ||
-        "Password must be 8 characters with uppercase, number and special character"
-  })}
-/>.     
-   
-           <Button type="submit"  className="w-full" />Sign Up<Button/>
+           label="Password"
+           placeholder="Enter your Password"
+           type="password"
+           {...register("password", {
+             required: "Password is required",
+             validate: (value) =>
+               /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(value) ||
+               "Password must be 8 characters with uppercase, number and special character"
+           })}
+         />
+
+           <Button type="submit" className="w-full cursor-pointer  ">Sign Up</Button>
 
            </div>
            </form>

@@ -28,14 +28,14 @@ function App() {
       });
   }, []);
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <div>Loading....</div>
 
   return (
     <>
       <div>
         <Header />
         <main>
-          <Outlet />   {/* ✅ renders child routes like Home, Login etc */}
+          <Outlet />  
         </main>
       </div>
     </>
