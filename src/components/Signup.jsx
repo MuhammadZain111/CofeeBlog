@@ -15,15 +15,27 @@ function Signup()
    
      const Navigate = useNavigate();
      const dispatch = useDispatch();
-     const { register, handleSubmit } = useForm();
+     const { register, handleSubmit, formState: { errors } } = useForm();
      const [error, setError] = useState("");
+     const [success, setSuccess] = useState("");
 
     const create = async (data) => {
       setError("");
+      setSuccess("");
       try {
-         await authService.createAccount(data);
-         Navigate("/login");
+         const userData = await authService.createAccount(data);
+         if (userData) {
+           const session = await authService.login({ email: data.email, password: data.password });
+           if (session) {
+             dispatch(authLogin({ userData }));
+             setSuccess("Account created and logged in successfully!");
+             setTimeout(() => {
+               Navigate("/");
+             }, 2000);
+           }
+         }
       } catch (error) {
+        console.log("Sign up error:", error);
         setError(error.message);
       }
     }
@@ -52,7 +64,8 @@ function Signup()
          </Link>
          </p>
    
-        {error && <p className="text-red-500 text-center">{error}</p>}
+         {error && <p className="text-red-500 text-center">{error}</p>}
+         {success && <p className="text-green-500 text-center">{success}</p>}
    
        <form onSubmit={handleSubmit(create)} className="mt-8"   >
           <div className=" space-y-5 "  >
@@ -66,6 +79,7 @@ function Signup()
            {...register("name", {
              required: "Name is required",
            })}
+           error={errors.name?.message}
          />
          <Input
            label="Email"
@@ -77,6 +91,7 @@ function Signup()
              /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ||
             "Enter a valid email address"
            })}
+           error={errors.email?.message}
            />
          <Input
            label="Password"
@@ -88,6 +103,7 @@ function Signup()
                /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(value) ||
                "Password must be 8 characters with uppercase, number and special character"
            })}
+           error={errors.password?.message}
          />
 
            <Button type="submit" className="w-full cursor-pointer  ">Sign Up</Button>

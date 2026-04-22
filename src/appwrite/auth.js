@@ -16,25 +16,16 @@ export class AuthService {
   }
 
   async createAccount({ email, password, name }) {
-    try {
-      return await this.account.create(
-        ID.unique(),
-        email,
-        password,
-        name
-      );
-    } catch (error) {
-      throw error;
-    }
+    return await this.account.create(
+      ID.unique(),
+      email,
+      password,
+      name
+    );
   }
 
   async login({ email, password }) {
-    try {
-      // ✅ Fixed method name
-      return await this.account.createEmailPasswordSession(email, password);
-    } catch (error) {
-      throw error;
-    }
+    return await this.account.createEmailPasswordSession(email, password);
   }
 
   async getCurrentUser() {

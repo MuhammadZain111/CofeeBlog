@@ -5,7 +5,9 @@ const Input = React.forwardRef(function Input(
     label,
     type = "text", 
     className = "", 
-    id, ...props },
+    id,
+    error,
+    ...props },
   ref
 ) 
 {
@@ -27,6 +29,7 @@ const Input = React.forwardRef(function Input(
         className={`px-3 py-2 rounded-lg bg-white text-black outline-none focus:bg-gray-50 ${className}`}
         {...props}
       />
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 });
