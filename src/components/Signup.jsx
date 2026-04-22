@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import authService from '../appwrite/auth'
-import { login as authLogin } from '../store/authSlice'
 import { Button, Input, Logo } from './index/'
 
 
@@ -14,7 +12,6 @@ function Signup()
 {
    
      const Navigate = useNavigate();
-     const dispatch = useDispatch();
      const { register, handleSubmit, formState: { errors } } = useForm();
      const [error, setError] = useState("");
      const [success, setSuccess] = useState("");
@@ -25,14 +22,10 @@ function Signup()
       try {
          const userData = await authService.createAccount(data);
          if (userData) {
-           const session = await authService.login({ email: data.email, password: data.password });
-           if (session) {
-             dispatch(authLogin({ userData }));
-             setSuccess("Account created and logged in successfully!");
-             setTimeout(() => {
-               Navigate("/");
-             }, 2000);
-           }
+           setSuccess("Account created successfully! Please log in.");
+           setTimeout(() => {
+             Navigate("/login");
+           }, 2000);
          }
       } catch (error) {
         console.log("Sign up error:", error);
